@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import HomePage from './screens/HomePage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DetailManga from './screens/DetailManga';
+import ReadChapter from './screens/ReadChapter';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,6 +14,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="home" component={HomePage} />
         <Stack.Screen name="detail_manga" component={DetailManga} />
+        <Stack.Screen name="reading_chapter" component={ReadChapter} />
       </Stack.Navigator>
     </NavigationContainer>
   );

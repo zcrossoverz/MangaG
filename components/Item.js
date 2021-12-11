@@ -1,4 +1,3 @@
-import { prop } from 'cheerio/lib/api/attributes';
 import React from 'react'
 import { ImageBackground, Text, StyleSheet, TouchableOpacity  } from 'react-native'
 import { vw, vh } from 'react-native-expo-viewport-units';

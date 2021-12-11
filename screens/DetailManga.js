@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import DETAIL_MANGA from "../apis/get_detail_manga";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { SafeAreaView, View, Dimensions, StyleSheet, Text, Image, FlatList, TouchableOpacity, ScrollView } from "react-native";
+import { SafeAreaView, View, Dimensions, StyleSheet, Text, Image, FlatList, ScrollView, TouchableOpacity } from "react-native";
+import Chapter from '../components/Chapter';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-export default function DetailManga({route}) {
+export default function DetailManga({route, navigation}) {
     const [data, setData] = useState(false);
     const { url } = route.params;
     useEffect(() => {
         DETAIL_MANGA(url).then(res => setData(res));
     }, []);
+    // console.log(data);
     return (
         <SafeAreaView style={styles.container}>
             {
@@ -25,11 +27,35 @@ export default function DetailManga({route}) {
                         <View style={styles.detail_info}>
         
                         <Text style={styles.title}>{ data.title }</Text>
+                        <FlatList 
+                        data={data.genres}
+                        numColumns={3}
+                        renderItem={({item}) => {
+                            return (
+                                <TouchableOpacity style={styles.genres}>
+                                    <Text style={styles.genres_text}>
+                                        {item}
+                                    </Text>
+                                </TouchableOpacity>
+                            );
+                        }}
+                        keyExtractor={(item) => item.toString()}
+                        />
                         <Text style={styles.text}><MaterialCommunityIcons name="pencil" size={25} /> Tác giả: { data.author }</Text>
                         <Text style={styles.text}><MaterialCommunityIcons name="rss" size={25} /> Tình trạng: { data.status }</Text>
                         <Text style={styles.text}><MaterialCommunityIcons name="calendar-text" size={25} /> Giới thiệu:</Text>
                         <Text style={styles.text}>{ data.summary }</Text>
-                        {/* <ListChapter list_chapter={data.list_chapter} /> */}
+                        <FlatList 
+                        data={data.chapter_list}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({item}) => 
+                            <Chapter 
+                            item={item}
+                            navigation={navigation}
+                            />
+                        }
+                        >
+                        </FlatList>
                         </View>
                     </ScrollView>
                 )
