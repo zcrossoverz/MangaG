@@ -3,9 +3,23 @@ import DETAIL_MANGA from "../apis/get_detail_manga";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SafeAreaView, View, Dimensions, StyleSheet, Text, Image, FlatList, ScrollView, TouchableOpacity } from "react-native";
 import Chapter from '../components/Chapter';
+import { vw, vh } from 'react-native-expo-viewport-units';
+import Loading from '../components/Loading';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
+
+const seperate = () => {
+    return (
+        <View style={{ 
+            width: '100%',
+            height: 0.5,
+            marginRight: 8,
+            marginLeft: 8,
+            backgroundColor: '#ccc',
+        }}></View>
+    );
+}
 
 export default function DetailManga({route, navigation}) {
     const [data, setData] = useState(false);
@@ -18,7 +32,9 @@ export default function DetailManga({route, navigation}) {
         <SafeAreaView style={styles.container}>
             {
                 data && (
-                    <ScrollView>
+                    <ScrollView
+                    showsHorizontalScrollIndicator={false}
+                    >
                         <View style={styles.detail_image}>
                             <Image style={styles.image_thumbnail}
                             source={{ uri: data.thumbnail }}
@@ -29,7 +45,8 @@ export default function DetailManga({route, navigation}) {
                         <Text style={styles.title}>{ data.title }</Text>
                         <FlatList 
                         data={data.genres}
-                        numColumns={3}
+                        horizontal
+                        style={{ maxWidth: vw(100) }}
                         renderItem={({item}) => {
                             return (
                                 <TouchableOpacity style={styles.genres}>
@@ -45,26 +62,32 @@ export default function DetailManga({route, navigation}) {
                         <Text style={styles.text}><MaterialCommunityIcons name="rss" size={25} /> Tình trạng: { data.status }</Text>
                         <Text style={styles.text}><MaterialCommunityIcons name="calendar-text" size={25} /> Giới thiệu:</Text>
                         <Text style={styles.text}>{ data.summary }</Text>
-                        <FlatList 
-                        data={data.chapter_list}
-                        keyExtractor={(item, index) => index.toString()}
-                        renderItem={({item}) => 
-                            <Chapter 
-                            item={item}
-                            navigation={navigation}
-                            />
-                        }
+                        <ScrollView style={styles.list_chapter}
+                        nestedScrollEnabled 
                         >
-                        </FlatList>
+                            <FlatList 
+                            data={data.chapter_list}
+                            keyExtractor={(item, index) => index.toString()}
+                            nestedScrollEnabled 
+                            renderItem={({item}) => 
+                                <Chapter 
+                                item={item}
+                                navigation={navigation}
+                                />
+                            }
+                            ItemSeparatorComponent={seperate}
+                            >
+                            </FlatList>
+                        </ScrollView>
                         </View>
                     </ScrollView>
                 )
             }
             {
                 !data && (
-                    <Text>
-                        Loading
-                    </Text>
+                    <View style={styles.loading}>
+                        <Loading />
+                    </View>
                 )
             }
         </SafeAreaView>
@@ -80,6 +103,12 @@ const styles = StyleSheet.create({
         height: screenHeight,
         backgroundColor: '#fff'
     },
+    loading: {
+        flex: 1,
+        justifyContent: 'center',
+        alignContent:'center'
+    }
+    ,
     detail_image: {
         padding: 8,
         height: screenHeight/2.5,
@@ -129,5 +158,13 @@ const styles = StyleSheet.create({
     text: {
         padding: 4,
         fontSize: 16
-    }
+    },
+    list_chapter: {
+        height: 200,
+        borderColor: '#a83232',
+        borderWidth: 1,
+        borderRadius: 4,
+        marginTop: 12,
+    },
+
 });
