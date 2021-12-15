@@ -11,18 +11,26 @@ export default function ImageChapter(props) {
     }, []);
     return (
         <View style={styles.container}>
-            <Image source={{ uri: props.url }} 
-            resizeMode="contain"
-            style={styles.image}
-            style={{ height: height }}
-            />
+            {
+                height != 0 ? 
+                (
+                    <Image source={{ uri: props.url }} 
+                        resizeMode="contain"
+                        style={styles.image}
+                        style={{ height: height }}
+                    />
+                ) : (
+                    <Image source={require(`../assets/loading-image.gif`)}
+                    style={{ height: vh(60), width: vw(100), marginBottom: 12 }} />
+                )
+            }
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 1
     },
     image: {
         width: vw(100)

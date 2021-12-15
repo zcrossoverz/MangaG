@@ -6,11 +6,15 @@ import ListByGenres from './ListByGenres';
 import DetailManga from './DetailManga';
 import ReadChapter from './ReadChapter';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as Animatable from 'react-native-animatable';
+import { Animations } from '../constants/Animation';
+
 
 
 const Stack = createNativeStackNavigator();
 
 const listGenres = ({ navigation }) => {
+    const animation = Animations[Math.floor(Math.random()*Animations.length)];
     const [genres, setgenres] = useState([]);
     useEffect(() => {
         LIST_GENRES().then((res) => setgenres(res));
@@ -19,10 +23,16 @@ const listGenres = ({ navigation }) => {
         <View>
             <FlatList 
             data={genres}
-            renderItem={({item}) => (
-                <TouchableOpacity style={styles.genres} onPress={()=> navigation.navigate('list_by_genres', { url: item.url, name: item.name })}>
-                    <Text>{item.name}</Text>
-                </TouchableOpacity>
+            renderItem={({item, index}) => (
+                <Animatable.View
+                animation={animation}
+                duration={1000}
+                delay={index * 200}
+                >
+                    <TouchableOpacity style={styles.genres} onPress={()=> navigation.navigate('list_by_genres', { url: item.url+'?status=-1', name: item.name })}>
+                        <Text>{item.name}</Text>
+                    </TouchableOpacity>
+                </Animatable.View>
             )}
             keyExtractor={(e, i) => i.toString()}
             />

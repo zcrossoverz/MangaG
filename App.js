@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import HomePage from './screens/HomePage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -10,6 +10,8 @@ import Setting from './screens/Setting';
 import Home from './screens/Home';
 import Setting2 from './components/Setting2';
 import Genres from './screens/Genres';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 const Drawer = createDrawerNavigator();
 

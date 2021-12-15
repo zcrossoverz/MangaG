@@ -1,7 +1,7 @@
 const axios = require('axios');
 
-const LIST_BY_GENRES = (url, type) => 
-    axios.get(url+'?status=-1&sort=0')
+const LIST_BY_GENRES = (url) => 
+    axios.get(url)
     .then((res) => {
         const cheerio = require('cheerio');
         const $ = cheerio.load(res.data);

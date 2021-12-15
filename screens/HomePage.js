@@ -26,12 +26,14 @@ export default function HomePage({ navigation }) {
                 data={listManga}
                 renderItem={({item}) => 
                     <Item item={item}
-                    navigation={navigation}/>
+                    navigation={navigation}
+                    />
                 }
                 numColumns={2}
                 keyExtractor={(e,i) => i.toString()}
                 initialNumToRender={10}
                 onEndReachedThreshold={100}
+                showsVerticalScrollIndicator={false}
                 onEndReached={() => getNew()}
             >
             </FlatList>
@@ -46,5 +48,9 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignContent:'center'
+    },
+    container: {
+        flex:1,
+        alignItems: 'center'
     }
  });
