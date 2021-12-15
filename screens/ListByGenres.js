@@ -4,7 +4,7 @@ import { vw } from 'react-native-expo-viewport-units';
 import LIST_BY_GENRES from '../apis/list_by_genres';
 import Item from '../components/Item';
 import Loading from '../components/Loading';
-import { Animations } from '../constants/Animation';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function ListByGenres({ route, navigation }) {
     const [listManga, setListManga] = useState([]);
@@ -45,12 +45,19 @@ export default function ListByGenres({ route, navigation }) {
     const [url, seturl] = useState(route.params.url);
     const getNew = () => {
         setloading(1);
-        // setCurrentPage(1);
+        setCurrentPage(1);
         LIST_BY_GENRES(url+'&page='+currentPage).then(res => {
-            setListManga([...listManga, ...res]);
+            setListManga(res);
             setloading(0);
         });
-        console.log(1);
+        // console.log(1);
+    }
+    const loadMore = () => {
+        setCurrentPage(currentPage+1);
+        LIST_BY_GENRES(url+'&page='+currentPage).then(res => {
+            setListManga([...listManga, ...res]);
+        });
+        console.log(currentPage);
     }
     useEffect(() => {
         getNew();
@@ -62,22 +69,23 @@ export default function ListByGenres({ route, navigation }) {
                 <Loading />
             </View>
         ) }
-            <TextInput 
-            style={styles.input}
-            placeholder='search'
-            onChangeText={data => {
-                let newUrl = url;
-                if(newUrl.includes('&keyword=')){
-                    newUrl = newUrl.replace('&keyword='+newUrl.split('&keyword=')[1], '&keyword='+data);
-                }else{
-                    newUrl += '&keyword='+data;
-                }
-                setListManga([]);
-                seturl(newUrl);
-            }}
-            >
-                
-            </TextInput>
+            <View style={styles.input_container}>
+                <MaterialCommunityIcons name="magnify" color="#333" size={24} />
+                <TextInput 
+                style={styles.input}
+                placeholder='search'
+                onChangeText={data => {
+                    let newUrl = url;
+                    if(newUrl.includes('&keyword=')){
+                        newUrl = newUrl.replace('&keyword='+newUrl.split('&keyword=')[1], '&keyword='+data);
+                    }else{
+                        newUrl += '&keyword='+data;
+                    }
+                    setListManga([]);
+                    seturl(newUrl);
+                }}
+                />
+            </View>
             <FlatList
                 data={listManga}
                 renderItem={({item}) => 
@@ -89,7 +97,7 @@ export default function ListByGenres({ route, navigation }) {
                 keyExtractor={(e,i) => i.toString()}
                 initialNumToRender={10}
                 onEndReachedThreshold={0.7}
-                // onEndReached={() => getNew()}
+                // onEndReached={() => loadMore()}
             >
             </FlatList>
         </View>
@@ -108,12 +116,24 @@ const styles = StyleSheet.create({
         flex:1,
         alignItems: 'center'
     },
-    input: {
+    input_container: {
         flex: 1,
-        padding: 12,
-        width: vw(100),
-        height: 32,
-        backgroundColor: '#fff',
-        borderRadius: 8
+        padding: 8,
+        width: vw(95),
+        height: 52,
+        backgroundColor: '#ccc',
+        borderRadius: 8,
+        marginRight: 12,
+        marginLeft: 12,
+        marginTop: 12,
+        marginBottom: 8,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    input: {
+        height: 44,
+        width: '100%',
+        color: '#000'
     }
  });

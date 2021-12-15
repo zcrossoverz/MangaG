@@ -32,7 +32,7 @@ export default function HomePage({ navigation }) {
                 numColumns={2}
                 keyExtractor={(e,i) => i.toString()}
                 initialNumToRender={10}
-                onEndReachedThreshold={100}
+                onEndReachedThreshold={0.7}
                 showsVerticalScrollIndicator={false}
                 onEndReached={() => getNew()}
             >
