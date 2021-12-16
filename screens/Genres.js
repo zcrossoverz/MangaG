@@ -27,7 +27,7 @@ const listGenres = ({ navigation }) => {
                 <Animatable.View
                 animation={animation}
                 duration={1000}
-                delay={index * 200}
+                delay={index * 100}
                 >
                     <TouchableOpacity style={styles.genres} onPress={()=> navigation.navigate('list_by_genres', { url: item.url+'?status=-1', name: item.name })}>
                         <Text>{item.name}</Text>

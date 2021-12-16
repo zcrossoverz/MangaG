@@ -132,8 +132,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     input: {
-        height: 44,
+        // height: 44,
         width: '100%',
-        color: '#000'
-    }
+        color: '#000',
+        height: 144,
+        padding: 0
+    },
  });

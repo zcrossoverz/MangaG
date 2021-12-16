@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import DETAIL_MANGA from "../apis/get_detail_manga";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { SafeAreaView, View, Dimensions, StyleSheet, Text, Image, FlatList, ScrollView, TouchableOpacity } from "react-native";
+import { SafeAreaView, View, Dimensions, StyleSheet, Text, Image, FlatList, ScrollView, TouchableOpacity, Button } from "react-native";
 import Chapter from '../components/Chapter';
 import { vw, vh } from 'react-native-expo-viewport-units';
 import Loading from '../components/Loading';
+import { insertManga } from '../database';
+import { downloadManga } from '../services/download';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -21,13 +23,19 @@ const seperate = () => {
     );
 }
 
+// const downloadManga = (data) => {
+    
+// }
+
 export default function DetailManga({route, navigation}) {
     const [data, setData] = useState(false);
     const { url } = route.params;
     useEffect(() => {
-        DETAIL_MANGA(url).then(res => setData(res));
+        DETAIL_MANGA(url).then(res => {
+            setData(res);
+            insertManga(res.title, url);
+        });
     }, []);
-    // console.log(data);
     return (
         <SafeAreaView style={styles.container}>
             {
@@ -79,6 +87,11 @@ export default function DetailManga({route, navigation}) {
                             >
                             </FlatList>
                         </ScrollView>
+                                <TouchableOpacity style={styles.genres} onPress={() => downloadManga(data.chapter_list)}>
+                                    <Text style={styles.genres_text}>
+                                        Download
+                                    </Text>
+                                </TouchableOpacity>
                         </View>
                     </ScrollView>
                 )

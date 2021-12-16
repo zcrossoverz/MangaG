@@ -11,17 +11,20 @@ import Home from './screens/Home';
 import Setting2 from './components/Setting2';
 import Genres from './screens/Genres';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { initTable } from './database';
 
 
 const Drawer = createDrawerNavigator();
 
 const Stack = createNativeStackNavigator();
 
+initTable();
 
 export default function App() {
   return (
     <NavigationContainer>
       <Drawer.Navigator>
+        <Drawer.Screen name="Setting" component={Setting} options={{ title: "Thể loại" }} />
         <Drawer.Screen name="Genres" component={Genres} options={{ title: "Thể loại" }} />
         <Drawer.Screen name="Home" component={Home} options={{ title: "Mới cập nhật" }} />
       </Drawer.Navigator>
