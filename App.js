@@ -12,6 +12,9 @@ import Setting2 from './components/Setting2';
 import Genres from './screens/Genres';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { initTable } from './database';
+import Downloaded from './screens/Downloaded';
+import DownloadList from './screens/DownloadList';
+import Library from './screens/Library';
 
 
 const Drawer = createDrawerNavigator();
@@ -24,9 +27,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Drawer.Navigator>
-        <Drawer.Screen name="Setting" component={Setting} options={{ title: "Thể loại" }} />
+        <Drawer.Screen name="Setting" component={Setting} options={{ title: "Setting" }} />
         <Drawer.Screen name="Genres" component={Genres} options={{ title: "Thể loại" }} />
         <Drawer.Screen name="Home" component={Home} options={{ title: "Mới cập nhật" }} />
+        <Drawer.Screen name="Down" component={Downloaded} options={{ title: "Danh sách chờ download" }} />
+        <Drawer.Screen name="Library" component={Library} options={{ title: "Danh sách download" }} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

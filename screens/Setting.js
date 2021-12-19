@@ -4,7 +4,7 @@ import { View, Text, Image } from 'react-native'
 import * as FileSystem from 'expo-file-system';
 import * as Permissions from 'expo-permissions';
 import * as MediaLibrary from 'expo-media-library';
-import { drop, getAllManga } from '../database';
+import { drop, getAllDownload, getAllManga, getChapter, getManga } from '../database';
 import { downloadChapter, readFolder } from '../services/download';
 
 // const downloadFile = () => {
@@ -38,13 +38,14 @@ import { downloadChapter, readFolder } from '../services/download';
 // // FileSystem.readAsStringAsync(FileSystem.documentDirectory+'/nhan123.txt').then(data => console.log(data));
 // FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(res => console.log(res));
 
-
+// drop();
 
 export default function Setting() {
     useEffect(() => {
         // getAllManga();
-        readFolder('undefined');
+        // getManga('http://nhattruyenvip.com/truyen-tranh/than-long-vuong-toa-35881');
         // downloadChapter('http://nhattruyenvip.com/truyen-tranh/ngo-xa/chap-47/802264');
+        // getAllDownload();
     }, [])
     return (
         <View style={{ flex: 1 }}>

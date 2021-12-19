@@ -5,8 +5,8 @@ import { SafeAreaView, View, Dimensions, StyleSheet, Text, Image, FlatList, Scro
 import Chapter from '../components/Chapter';
 import { vw, vh } from 'react-native-expo-viewport-units';
 import Loading from '../components/Loading';
-import { insertManga } from '../database';
-import { downloadManga } from '../services/download';
+import { getManga, insertChapter, insertManga } from '../database';
+import { addToPendingDownload } from '../services/download';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -70,13 +70,11 @@ export default function DetailManga({route, navigation}) {
                         <Text style={styles.text}><MaterialCommunityIcons name="rss" size={25} /> Tình trạng: { data.status }</Text>
                         <Text style={styles.text}><MaterialCommunityIcons name="calendar-text" size={25} /> Giới thiệu:</Text>
                         <Text style={styles.text}>{ data.summary }</Text>
-                        <ScrollView style={styles.list_chapter}
-                        nestedScrollEnabled 
-                        >
                             <FlatList 
                             data={data.chapter_list}
                             keyExtractor={(item, index) => index.toString()}
                             nestedScrollEnabled 
+                            style={styles.list_chapter}
                             renderItem={({item}) => 
                                 <Chapter 
                                 item={item}
@@ -86,8 +84,7 @@ export default function DetailManga({route, navigation}) {
                             ItemSeparatorComponent={seperate}
                             >
                             </FlatList>
-                        </ScrollView>
-                                <TouchableOpacity style={styles.genres} onPress={() => downloadManga(data.chapter_list)}>
+                                <TouchableOpacity style={styles.genres} onPress={() => addToPendingDownload(data.chapter_list)}>
                                     <Text style={styles.genres_text}>
                                         Download
                                     </Text>

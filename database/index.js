@@ -13,7 +13,7 @@ export const initTable = () => {
       });
     db.transaction(tx => {
       tx.executeSql(
-        'CREATE TABLE if NOT EXISTS Chapter (id INTEGER PRIMARY KEY AUTOINCREMENT, manga_id INTEGER, name TEXT, url TEXT, is_download BOOL, star BOOL, time_read TEXT);',
+        'CREATE TABLE if NOT EXISTS Chapter (id INTEGER PRIMARY KEY AUTOINCREMENT, manga_url INTEGER, name TEXT, url TEXT, slug TEXT, max_index INTEGER, star BOOL, time_read TEXT);',
         [],
         () => console.log('Khởi tạo table chapter'),
         (e) => console.log('Lỗi khi khởi tạo table chapter: '+e)
@@ -22,12 +22,21 @@ export const initTable = () => {
 
     db.transaction(tx => {
       tx.executeSql(
-        'CREATE TABLE if NOT EXISTS DataDownload (id INTEGER PRIMARY KEY AUTOINCREMENT, chapter_id INTEGER, uri TEXT, time_download TEXT);',
+        'CREATE TABLE if NOT EXISTS Pending (id INTEGER PRIMARY KEY AUTOINCREMENT, chapter_name INTEGER, url TEXT, manga_url TEXT, slug TEXT);',
         [],
         () => console.log('Khởi tạo table data download'),
         (e) => console.log('Lỗi khi khởi tạo table Datadownload: '+e)
       );
     });
+
+    // db.transaction(tx => {
+    //   tx.executeSql(
+    //     'CREATE TABLE if NOT EXISTS Downloading (id INTEGER PRIMARY KEY AUTOINCREMENT, chapter_id INTEGER, uri TEXT);',
+    //     [],
+    //     () => console.log('Khởi tạo table data download'),
+    //     (e) => console.log('Lỗi khi khởi tạo table Datadownload: '+e)
+    //   );
+    // });
 };
 
 export const insertManga = (manga_name, url) => {
@@ -41,16 +50,86 @@ export const insertManga = (manga_name, url) => {
     });
 };
 
-export const insertChapter = (manga_id, chapter_name, url) => {
+export const insertChapter = (id, manga_url, chapter_name, url, max_index, slug) => {
   db.transaction(tx => {
       tx.executeSql(
-        "INSERT INTO Chapter(manga_id, name, url, is_download, star, time_read) SELECT "+manga_id+", '"+chapter_name+"', '"+url+"', false, false, datetime('now') WHERE NOT EXISTS(SELECT name FROM Chapter WHERE url = '"+url+"')",
+        "INSERT INTO Chapter(id, name, manga_url, url, max_index, slug, time_read) SELECT "+id+",'"+chapter_name+"', '"+manga_url+"', '"+url+"', "+max_index+", '"+slug+"', datetime('now') WHERE NOT EXISTS(SELECT url FROM Chapter WHERE url = '"+url+"')",
         [],
-        () => console.log("Insert chapter "+chapter_name+" vào manga "+manga_id+" thành công"),
+        () => console.log("Insert chapter "+chapter_name+" vào manga thành công"),
         (e) => console.log("Lỗi khi insert chapter "+chapter_name+": "+e)
       )
   });
 };
+
+export const deleteChapterPending = (slug) => {
+  db.transaction(tx => {
+    tx.executeSql(
+      "DELETE FROM Pending WHERE slug='"+slug+"'",
+      [],
+      () => { console.log('delete pending '); },
+      (e) => console.log("Error pending download: ",e)
+        )
+    });
+}
+
+export const insertPendingDownload = (chapter_name, url, manga_url, slug) => {
+  
+  db.transaction(tx => {
+    tx.executeSql(
+      "INSERT INTO Pending(chapter_name, url, manga_url, slug) SELECT '"+chapter_name+"', '"+url+"','"+manga_url+"','"+slug+"' WHERE NOT EXISTS(SELECT slug FROM Pending WHERE slug = '"+slug+"')",
+      [],
+      () => { console.log('insert '+chapter_name); },
+      (e) => console.log("Error pending download: ",e)
+        )
+    });
+};
+
+export const insertDataDownload = (chapter_id, list_data) => {
+  db.transaction(tx => {
+    tx.executeSql(
+      "INSERT INTO DataDownload(chapter_id, uri, time_download) SELECT "+chapter_id+", '"+JSON.stringify(list_data)+"', TIMEDATE('now') WHERE NOT EXISTS(SELECT chapter_id FROM DataDownload WHERE chapter_id = "+chapter_id+")",
+      [],
+      () => { },
+      (e) => console.log("Error download: ",e)
+        )
+    });
+};
+
+export const checkDownloadedChapter = (chapter_id) => {
+  db.transaction(tx => {
+    tx.executeSql(
+      "UPDATE Chapter SET is_download=true WHERE id="+chapter_id,
+      [],
+      () => { },
+      (e) => console.log("Error download: ",e)
+        )
+    });
+}
+
+export const getManga = (url) => {
+  let data = {};
+    db.transaction(tx => {
+      tx.executeSql(
+        "SELECT * FROM Manga WHERE url='"+url+"'",
+        [data],
+        (tx, res) => res.rows._array[0],
+        (e) => console.log("Lỗi khi get manga  ",e)
+      )
+  });
+};
+
+export const getChapter = (url) => {
+  db.transaction(tx => {
+    tx.executeSql(
+      "SELECT * FROM Chapter WHERE url="+url,
+      [],
+      (tx, res) => res.rows._array.forEach(e => {
+        console.log(e);
+      }),
+      (e) => console.log("Lỗi khi get all manga  ",e)
+    )
+});
+}
 
 
 export const getAllManga = () => {
@@ -61,6 +140,17 @@ export const getAllManga = () => {
         (tx, res) => res.rows._array.forEach(e => {
           console.log(e);
         }),
+        (e) => console.log("Lỗi khi get all manga  ",e)
+      )
+  });
+};
+
+export const getAllDownload = () => {
+  db.transaction(tx => {
+      tx.executeSql(
+        "SELECT * FROM DataDownload",
+        [],
+        (tx, res) => console.log(res),
         (e) => console.log("Lỗi khi get all manga  ",e)
       )
   });
@@ -112,7 +202,7 @@ export const drop = () => {
   });
   db.transaction(tx => {
     tx.executeSql(
-      'DROP TABLE DataDownload',
+      'DROP TABLE Pending',
       [],
       (tx, res) => {
           console.log("delete datadownload");
@@ -120,6 +210,16 @@ export const drop = () => {
       (e) => console.log(e)
     )
   });
+  // db.transaction(tx => {
+  //   tx.executeSql(
+  //     'DROP TABLE Downloading',
+  //     [],
+  //     (tx, res) => {
+  //         console.log("delete datadownload");
+  //     },
+  //     (e) => console.log(e)
+  //   )
+  // });
 }
 
 

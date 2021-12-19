@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, View, StyleSheet, TextInput } from 'react-native';
+import { FlatList, View, StyleSheet, TextInput, Text } from 'react-native';
 import { vw } from 'react-native-expo-viewport-units';
 import LIST_BY_GENRES from '../apis/list_by_genres';
 import Item from '../components/Item';
 import Loading from '../components/Loading';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+
+
 
 export default function ListByGenres({ route, navigation }) {
     const [listManga, setListManga] = useState([]);
@@ -70,21 +73,22 @@ export default function ListByGenres({ route, navigation }) {
             </View>
         ) }
             <View style={styles.input_container}>
-                <MaterialCommunityIcons name="magnify" color="#333" size={24} />
-                <TextInput 
-                style={styles.input}
-                placeholder='search'
-                onChangeText={data => {
-                    let newUrl = url;
-                    if(newUrl.includes('&keyword=')){
-                        newUrl = newUrl.replace('&keyword='+newUrl.split('&keyword=')[1], '&keyword='+data);
-                    }else{
-                        newUrl += '&keyword='+data;
-                    }
-                    setListManga([]);
-                    seturl(newUrl);
-                }}
-                />
+                    <MaterialCommunityIcons name="magnify" color="#333" size={24} />
+                    <TextInput 
+                    style={styles.input}
+                    placeholder='Tìm kiếm'
+                    onChangeText={data => {
+                        let newUrl = url;
+                        if(newUrl.includes('&keyword=')){
+                            newUrl = newUrl.replace('&keyword='+newUrl.split('&keyword=')[1], '&keyword='+data);
+                        }else{
+                            newUrl += '&keyword='+data;
+                        }
+                        setListManga([]);
+                        seturl(newUrl);
+                    }}
+                    >
+                    </TextInput>
             </View>
             <FlatList
                 data={listManga}
@@ -97,6 +101,7 @@ export default function ListByGenres({ route, navigation }) {
                 keyExtractor={(e,i) => i.toString()}
                 initialNumToRender={10}
                 onEndReachedThreshold={0.7}
+                ListFooterComponent={<View style={{ height: 100, flex: 1, alignItems: 'center' }}></View>}
                 // onEndReached={() => loadMore()}
             >
             </FlatList>
@@ -117,10 +122,9 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     input_container: {
-        flex: 1,
-        padding: 8,
+        padding: 12,
         width: vw(95),
-        height: 52,
+        height: 44,
         backgroundColor: '#ccc',
         borderRadius: 8,
         marginRight: 12,
@@ -132,10 +136,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     input: {
-        // height: 44,
         width: '100%',
         color: '#000',
-        height: 144,
-        padding: 0
+        height: 44,
+        padding: 4
     },
  });

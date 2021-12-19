@@ -9,6 +9,17 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as Animatable from 'react-native-animatable';
 import { Animations } from '../constants/Animation';
 
+const seperate = () => {
+    return (
+        <View style={{ 
+            width: '100%',
+            height: 0.5,
+            marginRight: 8,
+            marginLeft: 8,
+            backgroundColor: '#ccc',
+        }}></View>
+    );
+}
 
 
 const Stack = createNativeStackNavigator();
@@ -26,7 +37,7 @@ const listGenres = ({ navigation }) => {
             renderItem={({item, index}) => (
                 <Animatable.View
                 animation={animation}
-                duration={1000}
+                // duration={1000}
                 delay={index * 100}
                 >
                     <TouchableOpacity style={styles.genres} onPress={()=> navigation.navigate('list_by_genres', { url: item.url+'?status=-1', name: item.name })}>
@@ -35,6 +46,8 @@ const listGenres = ({ navigation }) => {
                 </Animatable.View>
             )}
             keyExtractor={(e, i) => i.toString()}
+            ListFooterComponent={<View style={{ height: 20 }}></View>}
+            ItemSeparatorComponent={seperate}
             />
         </View>
     );
@@ -53,14 +66,10 @@ export default function Genres() {
 
 const styles = StyleSheet.create({
     genres: {
-        borderWidth: 1,
         padding: 4,
-        borderColor:'#f18121',
         height: 40,
         alignItems:'center',
         backgroundColor:'#fff',
         justifyContent:'center',
-        margin: 4,
-        borderRadius: 8
     } 
 });

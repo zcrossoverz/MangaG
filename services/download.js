@@ -1,24 +1,33 @@
 import * as FileSystem from 'expo-file-system';
 import { documentDirectory } from 'expo-file-system';
+import { checkDownloadedChapter, deleteChapterPending, getChapter, insertChapter, insertDataDownload, insertPendingDownload } from '../database';
 const axios = require('axios');
+import * as SQLite from 'expo-sqlite';
+
+const db = SQLite.openDatabase("MangaG_NguyenNhan");
+
 
 const downloadImage = (uri, slug, name) => {
-    FileSystem.makeDirectoryAsync(FileSystem.documentDirectory+'/MangaG/'+slug);
-    FileSystem.downloadAsync(uri, FileSystem.documentDirectory+'/MangaG/'+slug+'/'+name)
-    .then(() => console.log('download done '+name))
-    .catch(e => console.log('error when download ',e));
+    FileSystem.makeDirectoryAsync(FileSystem.documentDirectory+'/MangaG/'+slug, { intermediates: true }).then(() => {
+        FileSystem.downloadAsync(uri, FileSystem.documentDirectory+'/MangaG/'+slug+'/'+name)
+        .catch(e => console.log('error when download ',e));
+    });
 };
 
 export const readFolder = (uri) => {
     FileSystem.readDirectoryAsync(FileSystem.documentDirectory+'/MangaG/'+uri).then(res => console.log(res));
 }
 
-export const downloadChapter = (chapter_url, slug, chapter_name) => {
+export const downloadChapter = (id, manga_url, chapter_url, slug, chapter_name) => {
     axios.get(chapter_url)
     .then((res) => {
         const cheerio = require('cheerio');
         const $ = cheerio.load(res.data);
-        $('.page-chapter img').map((index, item) => {
+        const z = $('.page-chapter img');
+        const max_index = z.length - 1;
+        deleteChapterPending(slug);
+        insertChapter(id, manga_url, chapter_name, chapter_url, max_index, slug);
+        z.map((index, item) => {
             let img = item.attribs['data-original'];
             if(img.includes('anhtoc')){
                 img = 'https:'+img;
@@ -30,14 +39,48 @@ export const downloadChapter = (chapter_url, slug, chapter_name) => {
     }).catch(e => console.log('Error: ',e));
 };
 
-export const downloadManga = (list_chapter) => {
-    let chapter = [];
-    list_chapter.forEach(e => {
-        let slug = e.chapter_url.split('truyen-tranh/')[1];
-        chapter.push({
-            chapter_name: e.chapter_name,
-            slug: slug
-        });
+
+export const downloadAllChapter = () => {
+    db.transaction(tx => {
+        tx.executeSql(
+          "SELECT * FROM Pending ORDER BY id ASC",
+          [],
+          (tx, res) => {
+              let promises = new Promise(res.rows._array.forEach(e => {
+                  downloadChapter(e.id, e.manga_url, e.url, e.slug, e.chapter_name);
+              }));
+              Promise.all([...promises]).all(() => console.log("downloaded !!!"));
+          },
+          (e) => console.log("Error import data ",e)
+        )
     });
-    console.log(chapter);
+}
+
+export const downloadManga = (list_chapter, manga_url) => {
+    list_chapter.forEach((e, i) => {
+        let slug = e.chapter_url.split('truyen-tranh/')[1];
+        downloadChapter(e.chapter_url, slug, e.chapter_name);
+    });
+};
+
+export const addToPendingDownload = (list_chapter) => {
+    list_chapter.reverse();
+    list_chapter.forEach((e, i) => {
+        let slug = e.chapter_url.split('truyen-tranh/')[1];
+        let manga_url = e.chapter_url.split('/chap-')[0];
+        insertPendingDownload(e.chapter_name, e.chapter_url, manga_url, slug);
+    });
+};
+
+export const getListPendingDownload = () => {
+    db.transaction(tx => {
+        tx.executeSql(
+          "SELECT * FROM Pending",
+          [],
+          (tx, res) => res.rows._array.forEach((e) => {
+
+          }),
+          (e) => console.log("Error import data ",e)
+        )
+    });
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList, View, StyleSheet } from 'react-native';
+import { vh } from 'react-native-expo-viewport-units';
 import LATEST_UPDATE from '../apis/latest_update_list';
 import Item from '../components/Item';
 import Loading from '../components/Loading';
@@ -47,7 +48,8 @@ const styles = StyleSheet.create({
     loading: {
         flex: 1,
         justifyContent: 'center',
-        alignContent:'center'
+        alignContent:'center',
+        marginTop: vh(45)
     },
     container: {
         flex:1,
