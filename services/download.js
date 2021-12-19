@@ -18,7 +18,7 @@ export const readFolder = (uri) => {
     FileSystem.readDirectoryAsync(FileSystem.documentDirectory+'/MangaG/'+uri).then(res => console.log(res));
 }
 
-export const downloadChapter = (id, manga_url, chapter_url, slug, chapter_name) => {
+export const downloadChapter = (id, manga_url, chapter_url, slug, chapter_name, manga_name) => {
     axios.get(chapter_url)
     .then((res) => {
         const cheerio = require('cheerio');
@@ -26,7 +26,7 @@ export const downloadChapter = (id, manga_url, chapter_url, slug, chapter_name) 
         const z = $('.page-chapter img');
         const max_index = z.length - 1;
         deleteChapterPending(slug);
-        insertChapter(id, manga_url, chapter_name, chapter_url, max_index, slug);
+        insertChapter(id, manga_url, chapter_name, chapter_url, max_index, slug, manga_name);
         z.map((index, item) => {
             let img = item.attribs['data-original'];
             if(img.includes('anhtoc')){
@@ -46,10 +46,9 @@ export const downloadAllChapter = () => {
           "SELECT * FROM Pending ORDER BY id ASC",
           [],
           (tx, res) => {
-              let promises = new Promise(res.rows._array.forEach(e => {
-                  downloadChapter(e.id, e.manga_url, e.url, e.slug, e.chapter_name);
-              }));
-              Promise.all([...promises]).all(() => console.log("downloaded !!!"));
+              res.rows._array.forEach(e => {
+                  downloadChapter(e.id, e.manga_url, e.url, e.slug, e.chapter_name, e.manga_name);
+              });
           },
           (e) => console.log("Error import data ",e)
         )
@@ -63,12 +62,12 @@ export const downloadManga = (list_chapter, manga_url) => {
     });
 };
 
-export const addToPendingDownload = (list_chapter) => {
+export const addToPendingDownload = (list_chapter, manga_name) => {
     list_chapter.reverse();
     list_chapter.forEach((e, i) => {
         let slug = e.chapter_url.split('truyen-tranh/')[1];
         let manga_url = e.chapter_url.split('/chap-')[0];
-        insertPendingDownload(e.chapter_name, e.chapter_url, manga_url, slug);
+        insertPendingDownload(e.chapter_name, e.chapter_url, manga_url, slug, manga_name);
     });
 };
 

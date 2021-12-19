@@ -102,7 +102,7 @@ export default function ListByGenres({ route, navigation }) {
                 initialNumToRender={10}
                 onEndReachedThreshold={0.7}
                 ListFooterComponent={<View style={{ height: 100, flex: 1, alignItems: 'center' }}></View>}
-                // onEndReached={() => loadMore()}
+                onEndReached={() => loadMore()}
             >
             </FlatList>
         </View>

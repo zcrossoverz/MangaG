@@ -20,8 +20,6 @@ const ItemPending = (props) => {
 export default function Downloaded() {
     const [pendingDownload, setpendingDownload] = useState([]);
     useEffect(() => {
-
-
         db.transaction(tx => {
             tx.executeSql(
               "SELECT * FROM Pending",
@@ -33,7 +31,7 @@ export default function Downloaded() {
 
     
 
-    }, [])
+    }, [pendingDownload])
     return (
         <View style={{ flex: 1 }}>
             <FlatList 
@@ -41,7 +39,7 @@ export default function Downloaded() {
             keyExtractor={(e, i) => i.toString()}
             renderItem={({item}) => <ItemPending item={item} />}
             />
-            <TouchableOpacity style={{ height:200, width: 200 }} onPress={() => downloadAllChapter()}>
+            <TouchableOpacity style={{ height:60, width: 200, borderColor:'blue', borderWidth:1, alignItems:'center', justifyContent:'center', margin:12, borderRadius:8 }} onPress={() => downloadAllChapter()}>
                                     <Text>
                                         Download
                                     </Text>

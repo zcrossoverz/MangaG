@@ -84,9 +84,9 @@ export default function DetailManga({route, navigation}) {
                             ItemSeparatorComponent={seperate}
                             >
                             </FlatList>
-                                <TouchableOpacity style={styles.genres} onPress={() => addToPendingDownload(data.chapter_list)}>
+                                <TouchableOpacity style={styles.genres} onPress={() => addToPendingDownload(data.chapter_list, data.title)}>
                                     <Text style={styles.genres_text}>
-                                        Download
+                                        đánh dấu download
                                     </Text>
                                 </TouchableOpacity>
                         </View>

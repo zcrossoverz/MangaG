@@ -15,6 +15,7 @@ import { initTable } from './database';
 import Downloaded from './screens/Downloaded';
 import DownloadList from './screens/DownloadList';
 import Library from './screens/Library';
+import Test from './screens/Test';
 
 
 const Drawer = createDrawerNavigator();
@@ -27,11 +28,12 @@ export default function App() {
   return (
     <NavigationContainer>
       <Drawer.Navigator>
-        <Drawer.Screen name="Setting" component={Setting} options={{ title: "Setting" }} />
+        {/* <Drawer.Screen name="Setting" component={Setting} options={{ title: "Setting" }} /> */}
+        <Drawer.Screen name="Home" component={Home} options={{ title: "Mới cập nhật" }}  />
         <Drawer.Screen name="Genres" component={Genres} options={{ title: "Thể loại" }} />
-        <Drawer.Screen name="Home" component={Home} options={{ title: "Mới cập nhật" }} />
         <Drawer.Screen name="Down" component={Downloaded} options={{ title: "Danh sách chờ download" }} />
         <Drawer.Screen name="Library" component={Library} options={{ title: "Danh sách download" }} />
+        <Drawer.Screen name="Test" component={Test} options={{ title: "test" }} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

@@ -13,34 +13,30 @@ const db = SQLite.openDatabase("MangaG_NguyenNhan");
 
 const Item = (props) => {
     return (
-        <Text>{props.item.manga_name} - {props.item.name}</Text>
+        <Text>{props.item.manga_name}</Text>
     );
 }
 
 
-export default function DownloadList({ navigation }) {
+export default function Test({ navigation }) {
     const [list, setlist] = useState([]);
     useEffect(() => {
         db.transaction(tx => {
             tx.executeSql(
-              "SELECT * FROM Chapter ORDER BY id ASC",
+              "SELECT * FROM Chapter GROUP BY manga_url",
               [],
               (tx, res) => setlist(res.rows._array),
               (e) => console.log("error get data downloaded ",e)
             )
         });
-    }, [list]);
+    }, [])
     return (
         <View style={{ flex: 1 }}> 
-            <Text>List downloaded</Text>
+            <Text style={{ margin:10 }}>Truyện đã download: </Text>
             <FlatList 
             data={list}
             keyExtractor={(e, i) => i.toString()}
-            renderItem={({item}) => <TouchableOpacity style={{ height: 50, width: '100%', borderColor: 'red', borderWidth: 1 }} onPress={() => {
-                navigation.navigate('reading_chapter', {
-                    slug: item.slug
-                });
-            }}><Item item={item} /></TouchableOpacity>}
+            renderItem={({item}) => <Item item={item} />}
             />
         </View>
     )

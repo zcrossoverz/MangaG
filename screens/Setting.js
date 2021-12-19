@@ -7,38 +7,12 @@ import * as MediaLibrary from 'expo-media-library';
 import { drop, getAllDownload, getAllManga, getChapter, getManga } from '../database';
 import { downloadChapter, readFolder } from '../services/download';
 
-// const downloadFile = () => {
-//     const uri = "http://techslides.com/demos/sample-videos/small.mp4"
-//     let fileUri = FileSystem.documentDirectory + "/MangaG/small.mp4";
-//     FileSystem.downloadAsync(uri, fileUri)
-//     .then(({ uri }) => {
-//         // saveFile(uri);
-//         console.log('download to '+uri);
-//       })
-//       .catch(error => {
-//         console.error(error);
-//       })
-// }
-  
 
-// const saveFile = async (fileUri) => {
-//     // const { status } = await Permissions.askAsync(Permissions.WRITE_EXTERNAL_STORAGE);
-//     // if (status === "granted") {
-//         // const asset = await MediaLibrary.createAssetAsync(fileUri)
-//         await FileSystem.writeAsStringAsync(fileUri);
-//         console.log(fileUri);
-//     // }else{
-//         // console.log('not granted');
-//     // }
-// }
-  
-// downloadFile();
-// // console.log(FileSystem.documentDirectory);
-// FileSystem.writeAsStringAsync(FileSystem.documentDirectory+'/nhan123.txt',"hello");
-// // FileSystem.readAsStringAsync(FileSystem.documentDirectory+'/nhan123.txt').then(data => console.log(data));
-// FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(res => console.log(res));
 
 // drop();
+// FileSystem.deleteAsync(FileSystem.documentDirectory+'/MangaG', { idempotent: true });
+
+// FileSystem.readDirectoryAsync(FileSystem.documentDirectory+'/SQLite/MangaG_NguyenNhan').then(res => console.log(res))
 
 export default function Setting() {
     useEffect(() => {
