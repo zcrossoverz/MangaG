@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList, Text } from 'react-native'
-import READING_CHAPTER from '../apis/get_chapter_content';
-import ImageChapter from '../components/ImageChapter';
+import READING_CHAPTER from '../../apis/get_chapter_content';
+import ImageChapter from '../../components/ImageChapter';
 
 
 export default function ReadChapter({route}) {

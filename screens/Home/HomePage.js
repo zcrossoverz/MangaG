@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList, View, StyleSheet } from 'react-native';
 import { vh } from 'react-native-expo-viewport-units';
-import LATEST_UPDATE from '../apis/latest_update_list';
-import Item from '../components/Item';
-import Loading from '../components/Loading';
+import LATEST_UPDATE from '../../apis/latest_update_list';
+import Item from '../../components/Item';
+import Loading from '../../components/Loading';
 
 
 export default function HomePage({ navigation }) {

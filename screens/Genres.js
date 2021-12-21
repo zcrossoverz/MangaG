@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import LIST_GENRES from '../apis/get_list_genres';
-import ListByGenres from './ListByGenres';
-import DetailManga from './DetailManga';
-import ReadChapter from './ReadChapter';
+import ListByGenres from './Genres/ListByGenres';
+import DetailManga from './Home/DetailManga';
+import ReadChapter from './Home/ReadChapter';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as Animatable from 'react-native-animatable';
 import { Animations } from '../constants/Animation';

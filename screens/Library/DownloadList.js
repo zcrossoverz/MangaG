@@ -1,11 +1,11 @@
 import React, { useState , useEffect } from 'react'
-import Header from '../components/Header'
+import Header from '../../components/Header'
 import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native'
 import * as FileSystem from 'expo-file-system';
 import * as Permissions from 'expo-permissions';
 import * as MediaLibrary from 'expo-media-library';
-import { drop, getAllDownload, getAllManga, getChapter, getManga } from '../database';
-import { downloadAllChapter, downloadChapter, getListPendingDownload, readFolder } from '../services/download';
+import { drop, getAllDownload, getAllManga, getChapter, getManga } from '../../database';
+import { downloadAllChapter, downloadChapter, getListPendingDownload, readFolder } from '../../services/download';
 import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase("MangaG_NguyenNhan");

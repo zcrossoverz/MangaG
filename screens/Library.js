@@ -1,10 +1,7 @@
 import React from 'react'
-import HomePage from './HomePage';
-import DetailManga from './DetailManga';
-import ReadChapter from './ReadChapter';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import DownloadList from './DownloadList';
-import ReadChapterDownload from './ReadChapterDownload';
+import DownloadList from './Library/DownloadList';
+import ReadChapterDownload from './Library/ReadChapterDownload';
 
 
 const Stack = createNativeStackNavigator();

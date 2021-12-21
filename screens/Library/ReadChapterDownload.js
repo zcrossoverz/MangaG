@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
-import ImageChapter from '../components/ImageChapter';
+import ImageChapter from '../../components/ImageChapter';
 import * as FileSystem from 'expo-file-system';
 
 export default function ReadChapterDownload({route}) {

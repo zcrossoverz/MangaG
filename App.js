@@ -1,19 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import HomePage from './screens/HomePage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import DetailManga from './screens/DetailManga';
-import ReadChapter from './screens/ReadChapter';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import Setting from './screens/Setting';
 import Home from './screens/Home';
 import Setting2 from './components/Setting2';
 import Genres from './screens/Genres';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { initTable } from './database';
-import Downloaded from './screens/Downloaded';
-import DownloadList from './screens/DownloadList';
+import Downloaded from './screens/Library/PendingDownload';
 import Library from './screens/Library';
 import Test from './screens/Test';
 

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import DETAIL_MANGA from "../apis/get_detail_manga";
+import DETAIL_MANGA from "../../apis/get_detail_manga";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SafeAreaView, View, Dimensions, StyleSheet, Text, Image, FlatList, ScrollView, TouchableOpacity, Button } from "react-native";
-import Chapter from '../components/Chapter';
-import { vw, vh } from 'react-native-expo-viewport-units';
-import Loading from '../components/Loading';
-import { getManga, insertChapter, insertManga } from '../database';
-import { addToPendingDownload } from '../services/download';
+import Chapter from '../../components/Chapter';
+import { vw } from 'react-native-expo-viewport-units';
+import Loading from '../../components/Loading';
+import { insertManga } from '../../database';
+import { addToPendingDownload } from '../../services/download';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;

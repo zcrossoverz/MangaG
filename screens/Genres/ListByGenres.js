@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList, View, StyleSheet, TextInput, Text } from 'react-native';
 import { vw } from 'react-native-expo-viewport-units';
-import LIST_BY_GENRES from '../apis/list_by_genres';
-import Item from '../components/Item';
-import Loading from '../components/Loading';
+import LIST_BY_GENRES from '../../apis/list_by_genres';
+import Item from '../../components/Item';
+import Loading from '../../components/Loading';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 

@@ -1,11 +1,6 @@
 import React, { useState , useEffect } from 'react'
-import Header from '../components/Header'
-import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native'
-import * as FileSystem from 'expo-file-system';
-import * as Permissions from 'expo-permissions';
-import * as MediaLibrary from 'expo-media-library';
-import { drop, getAllDownload, getAllManga, getChapter, getManga } from '../database';
-import { downloadAllChapter, downloadChapter, getListPendingDownload, readFolder } from '../services/download';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native'
+import { downloadAllChapter } from '../../services/download';
 import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase("MangaG_NguyenNhan");
@@ -17,7 +12,7 @@ const ItemPending = (props) => {
     );
 }
 
-export default function Downloaded() {
+export default function PendingDownload() {
     const [pendingDownload, setpendingDownload] = useState([]);
     useEffect(() => {
         db.transaction(tx => {

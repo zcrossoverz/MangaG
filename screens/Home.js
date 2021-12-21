@@ -1,7 +1,7 @@
 import React from 'react'
-import HomePage from './HomePage';
-import DetailManga from './DetailManga';
-import ReadChapter from './ReadChapter';
+import HomePage from './Home/HomePage';
+import DetailManga from './Home/DetailManga';
+import ReadChapter from './Home/ReadChapter';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 

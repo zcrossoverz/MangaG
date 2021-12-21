@@ -7,7 +7,9 @@ export const initTable = () => {
         tx.executeSql(
           'CREATE TABLE if NOT EXISTS Manga (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, url TEXT, is_download BOOL,  favorite BOOL, reading_chapter INTEGER, time_read TEXT);',
           [],
-          () => console.log('Khởi tạo table manga'),
+          () => {
+            //console.log('Khởi tạo table manga')
+          },
           (e) => console.log('Lỗi khi khởi tạo table manga: '+e)
         );
       });
@@ -15,7 +17,9 @@ export const initTable = () => {
       tx.executeSql(
         'CREATE TABLE if NOT EXISTS Chapter (id INTEGER PRIMARY KEY AUTOINCREMENT, manga_url TEXT, manga_name, name TEXT, url TEXT, slug TEXT, max_index INTEGER, star BOOL, time_read TEXT);',
         [],
-        () => console.log('Khởi tạo table chapter'),
+        () => { 
+          //console.log('Khởi tạo table chapter');
+         },
         (e) => console.log('Lỗi khi khởi tạo table chapter: '+e)
       );
     });
@@ -24,7 +28,9 @@ export const initTable = () => {
       tx.executeSql(
         'CREATE TABLE if NOT EXISTS Pending (id INTEGER PRIMARY KEY AUTOINCREMENT, chapter_name INTEGER, url TEXT, manga_name TEXT, manga_url TEXT, slug TEXT);',
         [],
-        () => console.log('Khởi tạo table data download'),
+        () => {
+          //console.log('Khởi tạo table data download')
+        },
         (e) => console.log('Lỗi khi khởi tạo table Datadownload: '+e)
       );
     });
@@ -37,7 +43,9 @@ export const insertManga = (manga_name, url) => {
         tx.executeSql(
           "INSERT INTO Manga(name, url, is_download, favorite, reading_chapter, time_read) SELECT '"+manga_name+"', '"+url+"', false, false, 0, datetime('now') WHERE NOT EXISTS(SELECT name FROM Manga WHERE name = '"+manga_name+"')",
           [],
-          () => console.log("Insert manga "+manga_name+" thành công"),
+          () => { 
+            //console.log("Insert manga "+manga_name+" thành công")
+          },
           (e) => console.log("Lỗi khi insert manga "+manga_name+": ",e)
         )
     });
@@ -48,7 +56,9 @@ export const insertChapter = (id, manga_url, chapter_name, url, max_index, slug,
       tx.executeSql(
         "INSERT INTO Chapter(id, name, manga_url, url, max_index, slug, manga_name, time_read) SELECT "+id+",'"+chapter_name+"', '"+manga_url+"', '"+url+"', "+max_index+", '"+slug+"', '"+manga_name+"', datetime('now') WHERE NOT EXISTS(SELECT url FROM Chapter WHERE url = '"+url+"')",
         [],
-        () => console.log("Insert chapter "+chapter_name+" vào manga thành công"),
+        () => {
+          //console.log("Insert chapter "+chapter_name+" vào manga thành công")
+        },
         (e) => console.log("Lỗi khi insert chapter "+chapter_name+": "+e)
       )
   });
@@ -59,7 +69,9 @@ export const deleteChapterPending = (slug) => {
     tx.executeSql(
       "DELETE FROM Pending WHERE slug='"+slug+"'",
       [],
-      () => { console.log('delete pending '); },
+      () => { 
+        //console.log('delete pending '); 
+      },
       (e) => console.log("Error pending download: ",e)
         )
     });
@@ -71,7 +83,9 @@ export const insertPendingDownload = (chapter_name, url, manga_url, slug, manga_
     tx.executeSql(
       "INSERT INTO Pending(chapter_name, url, manga_url, slug, manga_name) SELECT '"+chapter_name+"', '"+url+"','"+manga_url+"','"+slug+"','"+manga_name+"' WHERE NOT EXISTS(SELECT slug FROM Pending WHERE slug = '"+slug+"')",
       [],
-      () => { console.log('insert '+chapter_name); },
+      () => { 
+        //console.log('insert '+chapter_name); 
+      },
       (e) => console.log("Error pending download: ",e)
         )
     });
