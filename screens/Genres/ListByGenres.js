@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList, View, StyleSheet, TextInput, Text } from 'react-native';
-import { vw } from 'react-native-expo-viewport-units';
+import { vh, vw } from 'react-native-expo-viewport-units';
 import LIST_BY_GENRES from '../../apis/list_by_genres';
 import Item from '../../components/Item';
 import Loading from '../../components/Loading';
@@ -13,36 +13,36 @@ export default function ListByGenres({ route, navigation }) {
     const [listManga, setListManga] = useState([]);
     const [loading, setloading] = useState(1);
     // const [filter, setfilter] = useState(sortby[0]);
-    const sortby = [
-        {
-            sort: 0,
-            name: "Ngày cập nhật"
-        },
-        {
-            sort: -15,
-            name: "Truyện mới"
-        },
-        {
-            sort: 10,
-            name: "Top all"
-        },
-        {
-            sort: 11,
-            name: "Top tháng"
-        },
-        {
-            sort: 12,
-            name: "Top tuần"
-        },
-        {
-            sort: 13,
-            name: "Top ngày"
-        },
-        {
-            sort: 20,
-            name: "Theo dõi"
-        }
-    ];
+    // const sortby = [
+    //     {
+    //         sort: 0,
+    //         name: "Ngày cập nhật"
+    //     },
+    //     {
+    //         sort: -15,
+    //         name: "Truyện mới"
+    //     },
+    //     {
+    //         sort: 10,
+    //         name: "Top all"
+    //     },
+    //     {
+    //         sort: 11,
+    //         name: "Top tháng"
+    //     },
+    //     {
+    //         sort: 12,
+    //         name: "Top tuần"
+    //     },
+    //     {
+    //         sort: 13,
+    //         name: "Top ngày"
+    //     },
+    //     {
+    //         sort: 20,
+    //         name: "Theo dõi"
+    //     }
+    // ];
     // const[] = route.params;
     const [currentPage, setCurrentPage] = useState(1);
     const [url, seturl] = useState(route.params.url);
@@ -72,24 +72,28 @@ export default function ListByGenres({ route, navigation }) {
                 <Loading />
             </View>
         ) }
-            <View style={styles.input_container}>
-                    <MaterialCommunityIcons name="magnify" color="#333" size={24} />
-                    <TextInput 
-                    style={styles.input}
-                    placeholder='Tìm kiếm'
-                    onChangeText={data => {
-                        let newUrl = url;
-                        if(newUrl.includes('&keyword=')){
-                            newUrl = newUrl.replace('&keyword='+newUrl.split('&keyword=')[1], '&keyword='+data);
-                        }else{
-                            newUrl += '&keyword='+data;
-                        }
-                        setListManga([]);
-                        seturl(newUrl);
-                    }}
-                    >
-                    </TextInput>
-            </View>
+            {
+                listManga.length != 0 && (
+                    <View style={styles.input_container}>
+                        <MaterialCommunityIcons name="magnify" color="#333" size={24} />
+                        <TextInput 
+                        style={styles.input}
+                        placeholder='Tìm kiếm'
+                        onChangeText={data => {
+                            let newUrl = url;
+                            if(newUrl.includes('&keyword=')){
+                                newUrl = newUrl.replace('&keyword='+newUrl.split('&keyword=')[1], '&keyword='+data);
+                            }else{
+                                newUrl += '&keyword='+data;
+                            }
+                            setListManga([]);
+                            seturl(newUrl);
+                        }}
+                        >
+                        </TextInput>
+                    </View>
+                )
+            }
             <FlatList
                 data={listManga}
                 renderItem={({item}) => 
@@ -115,7 +119,8 @@ const styles = StyleSheet.create({
     loading: {
         flex: 1,
         justifyContent: 'center',
-        alignContent:'center'
+        alignContent:'center',
+        marginTop: vh(45)
     },
     container: {
         flex:1,

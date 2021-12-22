@@ -4,7 +4,12 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native'
 export default function Chapter(props) {
     return (
         <TouchableOpacity onPress={() => props.navigation.navigate('reading_chapter', {
-            url: props.item.chapter_url
+            url: props.item.chapter_url,
+            next: props.next,
+            previous: props.previous,
+            navigation: props.navigation,
+            list: props.list,
+            current: props.current
         })}>
             <Text style={styles.text}>
                 {props.item.chapter_name}

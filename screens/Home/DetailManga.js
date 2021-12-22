@@ -23,6 +23,7 @@ const seperate = () => {
     );
 }
 
+
 // const downloadManga = (data) => {
     
 // }
@@ -75,9 +76,13 @@ export default function DetailManga({route, navigation}) {
                             keyExtractor={(item, index) => index.toString()}
                             nestedScrollEnabled 
                             style={styles.list_chapter}
-                            renderItem={({item}) => 
+                            renderItem={({item, index}) => 
                                 <Chapter 
                                 item={item}
+                                next={index+1}
+                                previous={index-1}
+                                current={index}
+                                list={data.chapter_list}
                                 navigation={navigation}
                                 />
                             }
@@ -176,5 +181,8 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         marginTop: 12,
     },
-
+    navbtn: {
+        height: 100,
+        width: 200
+    }
 });
