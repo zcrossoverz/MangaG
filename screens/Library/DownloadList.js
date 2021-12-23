@@ -36,9 +36,12 @@ export default function DownloadList({ navigation }) {
             <FlatList 
             data={list}
             keyExtractor={(e, i) => i.toString()}
-            renderItem={({item}) => <TouchableOpacity style={{ height: 50, width: '100%', borderColor: 'red', borderWidth: 1 }} onPress={() => {
+            renderItem={({item, index}) => <TouchableOpacity style={{ height: 50, width: '100%', borderColor: 'red', borderWidth: 1 }} onPress={() => {
                 navigation.navigate('reading_chapter', {
-                    slug: item.slug
+                    slug: item.slug,
+                    navigation,
+                    list,
+                    current: index
                 });
             }}><Item item={item} /></TouchableOpacity>}
             />

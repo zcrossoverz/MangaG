@@ -6,46 +6,63 @@ import READING_CHAPTER from '../../apis/get_chapter_content';
 import ImageChapter from '../../components/ImageChapter';
 
 const Nav = (props) => {
-    const next = props.next;
-    const pre = props.pre;
     const current = props.current;
     const list = props.list;
-    console.log(current);
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.navbtn} onPress={() => props.navigation.navigate('reading_chapter', { 
-                url: pre.chapter_url,
-                
-             })}>
-                <Text style={styles.text}>
-                    Chap trước
-                </Text>
-            </TouchableOpacity>
+            {
+                current < list.length-1 && (
+                    <TouchableOpacity style={styles.navbtn} onPress={() => props.navigation.replace('reading_chapter', { 
+                        url: list[current+1].chapter_url,
+                        navigation: props.navigation,
+                        list: props.list,
+                        current: props.current+1
+                     })}>
+                        <Text style={styles.text}>
+                            Chap trước
+                        </Text>
+                    </TouchableOpacity>
+                )
+            }
             <Picker
             style={{ width: 120, height: 40, margin: 4, }}
             selectedValue={current}
             mode="dialog"
             onValueChange={
-                index => console.log(list[index])
+                index => props.navigation.replace('reading_chapter', { 
+                    url: list[index].chapter_url,
+                    navigation: props.navigation,
+                    list: props.list,
+                    current: index
+                 })
             }
             itemStyle={{ color:'red', fontWeight:'900', fontSize: 18, padding:30, }}>
                 {list.map((item, index) => {
                     return (< Picker.Item label={item.chapter_name} value={index} key={index} />);
                 })}   
             </Picker>
-            <TouchableOpacity style={styles.navbtn}>
-                <Text style={styles.text}>
-                    Chap sau
-                </Text>
-            </TouchableOpacity>
+            {
+                current > 0 && (
+                    <TouchableOpacity style={styles.navbtn}
+                        onPress={() => props.navigation.replace('reading_chapter', { 
+                            url: list[current-1].chapter_url,
+                            navigation: props.navigation,
+                            list: props.list,
+                            current: props.current-1
+                        })}>
+                            <Text style={styles.text}>
+                                Chap sau
+                            </Text>
+                    </TouchableOpacity>
+                )
+            }
         </View>
     )
 }
 
 export default function ReadChapter({route}) {
     const [data, setData] = useState([]);
-    const { url, next, previous, navigation, list, current } = route.params;
-    // console.log(next, previous);
+    const { url, navigation, list, current } = route.params;
     useEffect(() => {
         READING_CHAPTER(url).then(res => setData(res));
     }, []);
@@ -57,8 +74,8 @@ export default function ReadChapter({route}) {
             keyExtractor={(e, i) => i.toString()}
             initialNumToRender={5}
             // stickyHeaderIndices={[0]}
-            ListHeaderComponent={() => <Nav next={next} pre={previous} navigation={navigation} list={list} current={current} />}
-            ListFooterComponent={() => <Nav next={next} pre={previous} navigation={navigation} list={list} current={current} />}
+            ListHeaderComponent={() => <Nav navigation={navigation} list={list} current={current} />}
+            ListFooterComponent={() => <Nav navigation={navigation} list={list} current={current} />}
             >
             </FlatList>
         </>

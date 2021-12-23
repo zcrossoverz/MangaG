@@ -79,8 +79,6 @@ export default function DetailManga({route, navigation}) {
                             renderItem={({item, index}) => 
                                 <Chapter 
                                 item={item}
-                                next={index+1}
-                                previous={index-1}
                                 current={index}
                                 list={data.chapter_list}
                                 navigation={navigation}

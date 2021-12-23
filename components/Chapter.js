@@ -5,8 +5,6 @@ export default function Chapter(props) {
     return (
         <TouchableOpacity onPress={() => props.navigation.navigate('reading_chapter', {
             url: props.item.chapter_url,
-            next: props.next,
-            previous: props.previous,
             navigation: props.navigation,
             list: props.list,
             current: props.current

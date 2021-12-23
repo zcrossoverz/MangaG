@@ -8,6 +8,7 @@ import ReadChapter from './Home/ReadChapter';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as Animatable from 'react-native-animatable';
 import { Animations } from '../constants/Animation';
+import { DrawerToggleButton } from '@react-navigation/drawer';
 
 const seperate = () => {
     return (
@@ -56,10 +57,10 @@ const listGenres = ({ navigation }) => {
 export default function Genres() {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="list_genres" component={listGenres} options={{ headerShown: false }} />
-            <Stack.Screen name="list_by_genres" component={ListByGenres} options={{ headerShown: false }} />
-            <Stack.Screen name="detail_manga" component={DetailManga} options={{ headerShown: false }} />
-            <Stack.Screen name="reading_chapter" component={ReadChapter} options={{ headerShown: false }} />
+            <Stack.Screen name="list_genres" component={listGenres} options={{ title:'Danh sách thể loại' ,headerRight: () => <DrawerToggleButton /> }} />
+            <Stack.Screen name="list_by_genres" component={ListByGenres} options={({route})=> ({ title:route.params.name ,headerRight: () => <DrawerToggleButton /> })} />
+            <Stack.Screen name="detail_manga" component={DetailManga} options={{ title:'Thông tin truyện' ,headerRight: () => <DrawerToggleButton /> }} />
+            <Stack.Screen name="reading_chapter" component={ReadChapter} options={({route})=> ({ title:route.params.list[route.params.current].chapter_name ,headerRight: () => <DrawerToggleButton /> })} />
         </Stack.Navigator>
     )
 }

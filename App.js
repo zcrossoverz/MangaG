@@ -24,9 +24,9 @@ export default function App() {
     <NavigationContainer>
       <Drawer.Navigator>
         {/* <Drawer.Screen name="Setting" component={Setting} options={{ title: "Setting" }} /> */}
-        <Drawer.Screen name="Home" component={Home} options={{ title: "Mới cập nhật" }}  />
-        <Drawer.Screen name="Genres" component={Genres} options={{ title: "Thể loại" }} />
-        <Drawer.Screen name="Library" component={Library} options={{ title: "Thư viện" }} />
+        <Drawer.Screen name="Home" component={Home} options={{ title: "Mới cập nhật", headerShown: false }}  />
+        <Drawer.Screen name="Genres" component={Genres} options={{ title: "Thể loại", headerShown: false }} />
+        <Drawer.Screen name="Library" component={Library} options={{ title: "Thư viện", headerShown: false }} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

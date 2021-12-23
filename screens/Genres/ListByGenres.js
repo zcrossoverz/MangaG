@@ -67,13 +67,6 @@ export default function ListByGenres({ route, navigation }) {
     }, [url]);
     return (
         <View>
-        { loading === 1  && (
-            <View style={styles.loading}>
-                <Loading />
-            </View>
-        ) }
-            {
-                listManga.length != 0 && (
                     <View style={styles.input_container}>
                         <MaterialCommunityIcons name="magnify" color="#333" size={24} />
                         <TextInput 
@@ -92,8 +85,11 @@ export default function ListByGenres({ route, navigation }) {
                         >
                         </TextInput>
                     </View>
-                )
-            }
+                    { loading === 1  && (
+                        <View style={styles.loading}>
+                            <Loading />
+                        </View>
+                    ) }
             <FlatList
                 data={listManga}
                 renderItem={({item}) => 
@@ -120,7 +116,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignContent:'center',
-        marginTop: vh(45)
+        marginTop: vh(35)
     },
     container: {
         flex:1,
